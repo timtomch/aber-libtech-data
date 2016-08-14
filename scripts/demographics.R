@@ -11,4 +11,8 @@ library("ggplot2")
 
 # This displays a bar graph of the library type distribution.
 # Not very useful, replace it by something better.
-ggplot(data=survey, aes(x = X1)) + geom_bar(stat="count") + coord_flip() + ylab("Number of responses") + ggtitle("Figure 1: Responses by type of library")
+#ggplot(data=survey, aes(x = X1)) + geom_bar(stat="count") + coord_flip() + ylab("Number of responses") + ggtitle("Figure 1: Responses by type of library")
+
+# This is better, a simple contingency table across library type and size:
+print("Response demographics:")
+with(survey_demographics,table(X1,X2, dnn=c("Type of institution", "Total staff (FTE)")))
