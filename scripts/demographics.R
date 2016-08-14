@@ -1,3 +1,4 @@
+# Read survey data
 survey <- read.csv("data/results-for-investigating-2016-08-13-2209.csv")
 
 # Replace the long names of the columns by just the question codes
