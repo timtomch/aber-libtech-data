@@ -23,8 +23,9 @@ rtffile <- RTF(paste(tablespath,"demographics.doc", sep = "/"))
 addHeader(rtffile, "Survey demographics", subtitle = paste("Created:", Sys.time(), "from file:", infile))
 
 # Output total number of responses
-print(paste('Total number of responses:', nrow(survey)))
-addParagraph(rtffile, paste('Total number of responses:', nrow(survey)))
+survey_tot <- nrow(survey)
+print(paste('Total number of responses:', survey_tot))
+addParagraph(rtffile, paste('Total number of responses:', survey_tot))
 
 # Load the ggplot2 library, for plotting results.
 library("ggplot2")
@@ -63,6 +64,34 @@ print(basecomp_results)
 
 addParagraph(rtffile, "Base competencies:")
 addTable(rtffile, cbind(rownames(basecomp_results), basecomp_results))
+
+# This is the ugliest code ever
+# Either switch to Excel or learn proper R
+# See this for hints https://stackoverflow.com/questions/10349206/add-legend-to-ggplot2-line-plot
+# Also my legend is not printing :(
+df2 <- data.frame(basecomp_results)
+basecomp_plot <- ggplot() + geom_bar(data=df2, aes(x=rownames(df2),y=survey_tot), 
+                    stat="identity", fill="#999999") +
+                 geom_bar(data=df2, aes(x=rownames(df2),y=Well.represented+Somewhat.represented+Not.well.represented),
+                          stat="identity", fill="#009E73") + 
+                 geom_bar(data=df2, aes(x=rownames(df2),y=Somewhat.represented+Not.well.represented), 
+                         stat="identity", fill="#56B4E9") + 
+                 geom_bar(data=df2, aes(x=rownames(df2),y=Not.well.represented), 
+                          stat="identity", fill="#E69F00") + 
+                 coord_flip() + 
+                 xlab("Competencies present amongst library staff") + 
+                 ylab("Responses") + 
+                geom_text(data=df2, aes(x=rownames(df2),y=Not.well.represented/2, 
+                                        label=paste(round(Not.well.represented/survey_tot*100),"%"))) + 
+                geom_text(data=df2, aes(x=rownames(df2),y=Not.well.represented+(Somewhat.represented/2), 
+                                        label=paste(round(Somewhat.represented/survey_tot*100),"%"))) +
+                geom_text(data=df2, aes(x=rownames(df2),y=Not.well.represented+Somewhat.represented+(Well.represented/2), 
+                          label=paste(round(Well.represented/survey_tot*100),"%"))) +
+                scale_fill_manual(name="Legend", values = c("Not well represented"="#E69F00", "Somewhat represented"="#56B4E9", "Well represented"="#009E73", "Don't know - N/A"="#999999"))
+
+               
+
+print(basecomp_plot)
 
 # Close and write out the RTF file
 done(rtffile)
