@@ -58,8 +58,11 @@ delonemclean_score <- (likert_map[match(survey$Q12_1_a, likert_map[,1]),2]
 #print(delonemclean_score)
 
 # Correlation between the two success scores
-score_correlation <- cor(process_score,delonemclean_score)
-print(paste("Correlation between project success scores: ", score_correlation))
+#score_correlation <- cor(process_score,delonemclean_score)
+score_correlation <- lm(process_score ~ delonemclean_score)
+print("Correlation between project success metrics:")
+print(summary(score_correlation))
+#print(paste("Correlation between project success scores: ", score_correlation))
 
 # Question for Tom: how can I determine the p value?
 # summary(lm(delonemclean ~ process, data = scores_df))
@@ -68,12 +71,11 @@ print(paste("Correlation between project success scores: ", score_correlation))
 # Load the ggplot2 library, for plotting results.
 library("ggplot2")
 scores_df <- data.frame(process = process_score, delonemclean = delonemclean_score)
-scores_plot <- ggplot(scores_df, aes(x=process, y=delonemclean)) +
+ggplot(scores_df, aes(x=process, y=delonemclean)) +
                      geom_point(shape=1) +     # Use hollow circles
                      geom_smooth(method=lm) +  # Add linear regression line
-                     xlab("Project success defined as on time and budget (process)") + 
-                     ylab("Project success defined on deLone & McLean framework")
-print(scores_plot)
+                     xlab("Project success score as on time and budget (process)") + 
+                     ylab("Project success score on deLone & McLean framework")
 ggsave(paste(plotspath,"success_factor_correlation.png", sep = "/"))
 
 
@@ -101,7 +103,121 @@ skills_df <- data.frame(delonemclean = delonemclean_score,
                         proj_mgmt_rep, accounting_rep, communications_rep,
                         accessibility_rep, negotiation_rep, UX_rep, design_rep,
                         webdev_rep, dev_rep, sysadmin_rep)
-skills_plot <- ggplot(scores_df, aes(x=proj_mgmt_rep, y=delonemclean)) +
-  geom_point(shape=1) +     # Use hollow circles
-  geom_smooth(method=lm)  # Add linear regression line
-print(skills_plot)
+
+
+# Output box and whiskers plots of project succes score in relation
+# to each of the identified skills.
+
+ggplot(na.omit(skills_df), aes(x=proj_mgmt_rep, y=delonemclean)) +
+  geom_boxplot() +
+  xlab("Skill represented on project team") +
+  ylab("Project success score [deLone & McLean]") +
+  scale_x_discrete(breaks=c("0", "1"),
+                     labels=c("No", "Yes")) +
+  ggtitle("Skill \"Project Management\" in procurement team")
+ggsave(paste(plotspath,"proj_mgmpt_rep_box.png", sep = "/"))
+
+ggplot(na.omit(skills_df), aes(x=accounting_rep, y=delonemclean)) +
+  geom_boxplot() +
+  xlab("Skill represented on project team") +
+  ylab("Project success score [deLone & McLean]") +
+  scale_x_discrete(breaks=c("0", "1"),
+                   labels=c("No", "Yes")) +
+  ggtitle("Skill \"Accounting/costing/budgeting\" in procurement team")
+ggsave(paste(plotspath,"accounting_rep_box.png", sep = "/"))
+
+ggplot(na.omit(skills_df), aes(x=communications_rep, y=delonemclean)) +
+  geom_boxplot() +
+  xlab("Skill represented on project team") +
+  ylab("Project success score [deLone & McLean]") +
+  scale_x_discrete(breaks=c("0", "1"),
+                   labels=c("No", "Yes")) +
+  ggtitle("Skill \"Communications/outreach\" in procurement team")
+ggsave(paste(plotspath,"communications_rep_box.png", sep = "/"))
+
+ggplot(na.omit(skills_df), aes(x=accessibility_rep, y=delonemclean)) +
+  geom_boxplot() +
+  xlab("Skill represented on project team") +
+  ylab("Project success score [deLone & McLean]") +
+  scale_x_discrete(breaks=c("0", "1"),
+                   labels=c("No", "Yes")) +
+  ggtitle("Skill \"Accessibility assessment\" in procurement team")
+ggsave(paste(plotspath,"accessibility_rep_box.png", sep = "/"))
+
+ggplot(na.omit(skills_df), aes(x=negotiation_rep, y=delonemclean)) +
+  geom_boxplot() +
+  xlab("Skill represented on project team") +
+  ylab("Project success score [deLone & McLean]") +
+  scale_x_discrete(breaks=c("0", "1"),
+                   labels=c("No", "Yes")) +
+  ggtitle("Skill \"Negotiation\" in procurement team")
+ggsave(paste(plotspath,"negotiation_rep_box.png", sep = "/"))
+
+ggplot(na.omit(skills_df), aes(x=communications_rep, y=delonemclean)) +
+  geom_boxplot() +
+  xlab("Skill represented on project team") +
+  ylab("Project success score [deLone & McLean]") +
+  scale_x_discrete(breaks=c("0", "1"),
+                   labels=c("No", "Yes")) +
+  ggtitle("Skill \"Communications/outreach\" in procurement team")
+ggsave(paste(plotspath,"communications_rep_box.png", sep = "/"))
+
+ggplot(na.omit(skills_df), aes(x=UX_rep, y=delonemclean)) +
+  geom_boxplot() +
+  xlab("Skill represented on project team") +
+  ylab("Project success score [deLone & McLean]") +
+  scale_x_discrete(breaks=c("0", "1"),
+                   labels=c("No", "Yes")) +
+  ggtitle("Skill \"User experience design\" in procurement team")
+ggsave(paste(plotspath,"UX_rep_box.png", sep = "/"))
+
+ggplot(na.omit(skills_df), aes(x=design_rep, y=delonemclean)) +
+  geom_boxplot() +
+  xlab("Skill represented on project team") +
+  ylab("Project success score [deLone & McLean]") +
+  scale_x_discrete(breaks=c("0", "1"),
+                   labels=c("No", "Yes")) +
+  ggtitle("Skill \"Graphic design\" in procurement team")
+ggsave(paste(plotspath,"design_rep_box.png", sep = "/"))
+
+ggplot(na.omit(skills_df), aes(x=webdev_rep, y=delonemclean)) +
+  geom_boxplot() +
+  xlab("Skill represented on project team") +
+  ylab("Project success score [deLone & McLean]") +
+  scale_x_discrete(breaks=c("0", "1"),
+                   labels=c("No", "Yes")) +
+  ggtitle("Skill \"Web design\" in procurement team")
+ggsave(paste(plotspath,"webdev_rep_box.png", sep = "/"))
+
+ggplot(na.omit(skills_df), aes(x=dev_rep, y=delonemclean)) +
+  geom_boxplot() +
+  xlab("Skill represented on project team") +
+  ylab("Project success score [deLone & McLean]") +
+  scale_x_discrete(breaks=c("0", "1"),
+                   labels=c("No", "Yes")) +
+  ggtitle("Skill \"Computer programming\" in procurement team")
+ggsave(paste(plotspath,"dev_rep_box.png", sep = "/"))
+
+ggplot(na.omit(skills_df), aes(x=sysadmin_rep, y=delonemclean)) +
+  geom_boxplot() +
+  xlab("Skill represented on project team") +
+  ylab("Project success score [deLone & McLean]") +
+  scale_x_discrete(breaks=c("0", "1"),
+                   labels=c("No", "Yes")) +
+  ggtitle("Skill \"System administration\" in procurement team")
+ggsave(paste(plotspath,"sysadmin_rep_box.png", sep = "/"))
+
+# Analysis of variance (ANOVA) of presence of skills on project success score.
+# cf Wikipedia (https://en.wikipedia.org/wiki/Analysis_of_variance):
+# "ANOVAs are useful for comparing (testing) three or more means (groups or variables)
+# for statistical significance.
+# It is conceptually similar to multiple two-sample t-tests, but is more conservative
+# (results in less type I error).
+
+skills_fit <- lm(delonemclean ~ proj_mgmt_rep + accounting_rep + communications_rep +
+                  accessibility_rep + negotiation_rep + UX_rep + design_rep +
+                  webdev_rep + dev_rep + sysadmin_rep, data=skills_df)
+print("ANOVA of presence of skills on project success score:")
+print(anova(skills_fit))
+print("Summary:")
+print(summary(skills_fit))
