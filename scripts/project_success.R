@@ -12,8 +12,8 @@ source('scripts/data_prep.R')
 #         "Some requirements were not met" is coded with 2, mapped to -2 points
 # In Q10, "The work was complete" is coded with 1,          mapped to +2 points
 #         "Additional work was needed" is coded with 2,     mapped to -2 points
-#                                                   NA is   mapped to 0 point.
-reqs_map <- cbind(c(1,2,NA),c(2,-2,0))
+
+reqs_map <- cbind(c(1,2),c(2,-2))
 
 # In Q11, Q12, Q13 and Q14, a Likert scale is used with the following mapping:
 #           "Strongly disagree" is coded with 1,            mapped to -2 points
@@ -21,17 +21,17 @@ reqs_map <- cbind(c(1,2,NA),c(2,-2,0))
 #           "Neither agree nor disagree" is coded with 3,   mapped to 0 point
 #           "Somewhat agree" is coded with 4,               mapped to +1 point
 #           "Strongly agree" is coded with 5,               mapped to +2 points
-#                                                   NA is   mapped to 0 point.
-likert_map <- cbind(c(1,2,3,4,5,NA),c(-2,-1,0,1,2,0))
+
+likert_map <- cbind(c(1,2,3,4,5),c(-2,-1,0,1,2))
 
 # Compute project success metric using process variables
 
-reqs_score <- (reqs_map[match(survey$Q9, reqs_map[,1]),2]
-               + reqs_map[match(survey$Q10, reqs_map[,1]),2])
-statement_score <- (likert_map[match(survey$Q11_1_a, likert_map[,1]),2]
-                  + likert_map[match(survey$Q11_2_a, likert_map[,1]),2]
-                  + likert_map[match(survey$Q11_3_a, likert_map[,1]),2]
-                  + likert_map[match(survey$Q11_4_a, likert_map[,1]),2])
+reqs_score <- rowSums(cbind(reqs_map[match(survey$Q9, reqs_map[,1]),2],
+                reqs_map[match(survey$Q10, reqs_map[,1]),2]), na.rm = TRUE)
+statement_score <- rowSums(cbind(likert_map[match(survey$Q11_1_a, likert_map[,1]),2],
+                  likert_map[match(survey$Q11_2_a, likert_map[,1]),2],
+                  likert_map[match(survey$Q11_3_a, likert_map[,1]),2],
+                  likert_map[match(survey$Q11_4_a, likert_map[,1]),2]), na.rm = TRUE)
 
 # Normalize (max possible value is 6*2 = 12)
 process_score <- (reqs_score + statement_score)/12
@@ -39,22 +39,22 @@ process_score <- (reqs_score + statement_score)/12
 
 # Compute project success metric using outcome variable (deLone + McNeal)
 # Normalize (max possible value is 16*2 = 32)
-delonemclean_score <- (likert_map[match(survey$Q12_1_a, likert_map[,1]),2]
-                       + likert_map[match(survey$Q12_2_a, likert_map[,1]),2]
-                       + likert_map[match(survey$Q12_3_a, likert_map[,1]),2]
-                       + likert_map[match(survey$Q12_4_a, likert_map[,1]),2]
-                       + likert_map[match(survey$Q12_5_a, likert_map[,1]),2]
-                       + likert_map[match(survey$Q12_6_a, likert_map[,1]),2]
-                       + likert_map[match(survey$Q12_7_a, likert_map[,1]),2]
-                       + likert_map[match(survey$Q12_8_a, likert_map[,1]),2]
-                       + likert_map[match(survey$Q12_9_a, likert_map[,1]),2]
-                       + likert_map[match(survey$Q12_10_a, likert_map[,1]),2]
-                       + likert_map[match(survey$Q12_11_a, likert_map[,1]),2]
-                       + likert_map[match(survey$Q13_1_a, likert_map[,1]),2]
-                       + likert_map[match(survey$Q13_2_a, likert_map[,1]),2]
-                       + likert_map[match(survey$Q14_1_a, likert_map[,1]),2]
-                       + likert_map[match(survey$Q14_2_a, likert_map[,1]),2]
-                       + likert_map[match(survey$Q14_3_a, likert_map[,1]),2])/32
+delonemclean_score <- rowSums(cbind(likert_map[match(survey$Q12_1_a, likert_map[,1]),2],
+                       likert_map[match(survey$Q12_2_a, likert_map[,1]),2],
+                       likert_map[match(survey$Q12_3_a, likert_map[,1]),2],
+                       likert_map[match(survey$Q12_4_a, likert_map[,1]),2],
+                       likert_map[match(survey$Q12_5_a, likert_map[,1]),2],
+                       likert_map[match(survey$Q12_6_a, likert_map[,1]),2],
+                       likert_map[match(survey$Q12_7_a, likert_map[,1]),2],
+                       likert_map[match(survey$Q12_8_a, likert_map[,1]),2],
+                       likert_map[match(survey$Q12_9_a, likert_map[,1]),2],
+                       likert_map[match(survey$Q12_10_a, likert_map[,1]),2],
+                       likert_map[match(survey$Q12_11_a, likert_map[,1]),2],
+                       likert_map[match(survey$Q13_1_a, likert_map[,1]),2],
+                       likert_map[match(survey$Q13_2_a, likert_map[,1]),2],
+                       likert_map[match(survey$Q14_1_a, likert_map[,1]),2],
+                       likert_map[match(survey$Q14_2_a, likert_map[,1]),2],
+                       likert_map[match(survey$Q14_3_a, likert_map[,1]),2]), na.rm = TRUE)/32
 #print(delonemclean_score)
 
 # Correlation between the two success scores
