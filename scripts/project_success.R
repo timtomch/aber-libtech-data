@@ -7,6 +7,7 @@ source('scripts/data_prep.R')
 
 
 # Define value mapping
+
 # In Q9,  "All requirements were met" is coded with 1,      mapped to +2 points
 #         "Some requirements were not met" is coded with 2, mapped to -2 points
 # In Q10, "The work was complete" is coded with 1,          mapped to +2 points
@@ -74,3 +75,33 @@ scores_plot <- ggplot(scores_df, aes(x=process, y=delonemclean)) +
                      ylab("Project success defined on deLone & McLean framework")
 print(scores_plot)
 ggsave(paste(plotspath,"success_factor_correlation.png", sep = "/"))
+
+
+# Analyse whether there is a correlation between representation of a particular
+# skill and project success.
+# "Well represented" and "Somewhat represented" skills are grouped together
+# for this metric.
+# In Q8,  "Well represented is coded with 1,      mapped to 1
+#         "Somewhat represented" is coded with 2, mapped to 1
+#         "Not well represented" is coded with 3, mapped to 0
+#                                         NA is   mapped to 0
+skills_map <- cbind(c(1,2,3,NA),c(2,1,0,0))
+proj_mgmt_rep <- skills_map[match(survey$Q8_1_a, skills_map[,1]),2]
+accounting_rep <- skills_map[match(survey$Q8_2_a, skills_map[,1]),2]
+communications_rep <- skills_map[match(survey$Q8_3_a, skills_map[,1]),2]
+accessibility_rep <- skills_map[match(survey$Q8_4_a, skills_map[,1]),2]
+negotiation_rep <- skills_map[match(survey$Q8_5_a, skills_map[,1]),2]
+UX_rep <- skills_map[match(survey$Q8_6_a, skills_map[,1]),2]
+design_rep <- skills_map[match(survey$Q8_7_a, skills_map[,1]),2]
+webdev_rep <- skills_map[match(survey$Q8_8_a, skills_map[,1]),2]
+dev_rep <- skills_map[match(survey$Q8_9_a, skills_map[,1]),2]
+sysadmin_rep <- skills_map[match(survey$Q8_10_a, skills_map[,1]),2]
+
+skills_df <- data.frame(delonemclean = delonemclean_score,
+                        proj_mgmt_rep, accounting_rep, communications_rep,
+                        accessibility_rep, negotiation_rep, UX_rep, design_rep,
+                        webdev_rep, dev_rep, sysadmin_rep)
+skills_plot <- ggplot(scores_df, aes(x=proj_mgmt_rep, y=delonemclean)) +
+  geom_point(shape=1) +     # Use hollow circles
+  geom_smooth(method=lm)  # Add linear regression line
+print(skills_plot)
