@@ -84,18 +84,18 @@ ggsave(paste(plotspath,"success_factor_correlation.png", sep = "/"))
 # In Q8,  "Well represented is coded with 1,      mapped to 1
 #         "Somewhat represented" is coded with 2, mapped to 1
 #         "Not well represented" is coded with 3, mapped to 0
-#                                         NA is   mapped to 0
-skills_map <- cbind(c(1,2,3,NA),c(2,1,0,0))
-proj_mgmt_rep <- skills_map[match(survey$Q8_1_a, skills_map[,1]),2]
-accounting_rep <- skills_map[match(survey$Q8_2_a, skills_map[,1]),2]
-communications_rep <- skills_map[match(survey$Q8_3_a, skills_map[,1]),2]
-accessibility_rep <- skills_map[match(survey$Q8_4_a, skills_map[,1]),2]
-negotiation_rep <- skills_map[match(survey$Q8_5_a, skills_map[,1]),2]
-UX_rep <- skills_map[match(survey$Q8_6_a, skills_map[,1]),2]
-design_rep <- skills_map[match(survey$Q8_7_a, skills_map[,1]),2]
-webdev_rep <- skills_map[match(survey$Q8_8_a, skills_map[,1]),2]
-dev_rep <- skills_map[match(survey$Q8_9_a, skills_map[,1]),2]
-sysadmin_rep <- skills_map[match(survey$Q8_10_a, skills_map[,1]),2]
+#                                         
+skills_map <- cbind(c(1,2,3),c(1,1,0))
+proj_mgmt_rep <- factor(skills_map[match(survey$Q8_1_a, skills_map[,1]),2], ordered=TRUE)
+accounting_rep <- factor(skills_map[match(survey$Q8_2_a, skills_map[,1]),2], ordered=TRUE)
+communications_rep <- factor(skills_map[match(survey$Q8_3_a, skills_map[,1]),2], ordered=TRUE)
+accessibility_rep <- factor(skills_map[match(survey$Q8_4_a, skills_map[,1]),2], ordered=TRUE)
+negotiation_rep <- factor(skills_map[match(survey$Q8_5_a, skills_map[,1]),2], ordered=TRUE)
+UX_rep <- factor(skills_map[match(survey$Q8_6_a, skills_map[,1]),2], ordered=TRUE)
+design_rep <- factor(skills_map[match(survey$Q8_7_a, skills_map[,1]),2], ordered=TRUE)
+webdev_rep <- factor(skills_map[match(survey$Q8_8_a, skills_map[,1]),2], ordered=TRUE)
+dev_rep <- factor(skills_map[match(survey$Q8_9_a, skills_map[,1]),2], ordered=TRUE)
+sysadmin_rep <- factor(skills_map[match(survey$Q8_10_a, skills_map[,1]),2], ordered=TRUE)
 
 skills_df <- data.frame(delonemclean = delonemclean_score,
                         proj_mgmt_rep, accounting_rep, communications_rep,
