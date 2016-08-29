@@ -74,8 +74,8 @@ scores_df <- data.frame(process = process_score, delonemclean = delonemclean_sco
 ggplot(scores_df, aes(x=process, y=delonemclean)) +
                      geom_point(shape=1) +     # Use hollow circles
                      geom_smooth(method=lm) +  # Add linear regression line
-                     xlab("Project success score as on time and budget (process)") + 
-                     ylab("Project success score on deLone & McLean framework")
+                     xlab(expression(paste("Process-oriented project success score " (s[process])))) + 
+                     ylab(expression(paste("Results-oriented project success score " (s[results]))))
 ggsave(paste(plotspath,"success_factor_correlation.png", sep = "/"))
 
 

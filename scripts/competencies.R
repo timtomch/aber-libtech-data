@@ -1,7 +1,7 @@
 # This script takes the CSV file exported from BOS with the survey data
 
 # Specify which file to open
-infile <- "data/results-for-investigating-2016-08-13-2209.csv"
+infile <- "data/results-for-investigating-2016-08-29-0052.csv"
 
 # And where to store results
 plotspath <- "plots"
@@ -89,9 +89,7 @@ basecomp_plot <- ggplot() + geom_bar(data=df2, aes(x=rownames(df2),y=survey_tot)
                           label=paste(round(Well.represented/survey_tot*100),"%"))) +
                 scale_fill_manual(name="Legend", values = c("Not well represented"="#E69F00", "Somewhat represented"="#56B4E9", "Well represented"="#009E73", "Don't know - N/A"="#999999"))
 
-               
-
-print(basecomp_plot)
+ggsave(paste(plotspath,"baseline_competencies.png", sep = "/"))               
 
 # Close and write out the RTF file
 done(rtffile)
