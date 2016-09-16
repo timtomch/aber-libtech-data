@@ -49,6 +49,11 @@ survey$Q8_8_a[survey$Q8_8_a==4] <- NA
 survey$Q8_9_a[survey$Q8_9_a==4] <- NA
 survey$Q8_10_a[survey$Q8_10_a==4] <- NA
 
+# For Q6, BOS coded "Not sure / don't know" as "5", convert to "NA"
+# Also BOS coded "Other" as "6", convert to "5"
+survey$Q6[survey$Q6==5] <- NA
+survey$Q6[survey$Q6==6] <- 5
+
 # For Q9 and Q10, BOS coded "Not sure / don't know" as "3", convert to "NA"
 survey$Q9[survey$Q9==3] <- NA
 survey$Q10[survey$Q10==3] <- NA

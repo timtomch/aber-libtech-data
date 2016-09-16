@@ -71,12 +71,19 @@ print(summary(score_correlation))
 # Load the ggplot2 library, for plotting results.
 library("ggplot2")
 scores_df <- data.frame(process = process_score, delonemclean = delonemclean_score)
-ggplot(scores_df, aes(x=process, y=delonemclean)) +
+success_factor_correlation <- ggplot(scores_df, aes(x=process, y=delonemclean)) +
                      geom_point(shape=1) +     # Use hollow circles
                      geom_smooth(method=lm) +  # Add linear regression line
                      xlab(expression(paste("Process-oriented project success score " (s[process])))) + 
                      ylab(expression(paste("Results-oriented project success score " (s[results]))))
 ggsave(paste(plotspath,"success_factor_correlation.png", sep = "/"))
+
+# Save graph as EMF format for import into MS Word :poop:
+library("devEMF")
+emf(file=paste(plotspath,"success_factor_correlation.emf", sep = "/"))
+show(success_factor_correlation)
+dev.off()
+
 
 
 # Analyse whether there is a correlation between representation of a particular
@@ -108,104 +115,171 @@ skills_df <- data.frame(delonemclean = delonemclean_score,
 # Output box and whiskers plots of project succes score in relation
 # to each of the identified skills.
 
-ggplot(na.omit(skills_df), aes(x=proj_mgmt_rep, y=delonemclean)) +
+proj_mgmpt_rep_box <- ggplot(na.omit(skills_df), aes(x=proj_mgmt_rep, y=delonemclean)) +
   geom_boxplot() +
   xlab("Skill represented on project team") +
-  ylab("Project success score [deLone & McLean]") +
+  ylab("Project success score [DeLone & McLean]") +
   scale_x_discrete(breaks=c("0", "1"),
                      labels=c("No", "Yes")) +
+  scale_y_continuous(limits=c(-1,1),breaks=c(-1,-0.5,0,0.5,1), 
+                       labels=c("-1.0\nUnsuccessful","0.5","0.0","0.5","Successful\n1.0")) +
   ggtitle("Skill \"Project Management\" in procurement team")
 ggsave(paste(plotspath,"proj_mgmpt_rep_box.png", sep = "/"))
 
-ggplot(na.omit(skills_df), aes(x=accounting_rep, y=delonemclean)) +
+emf(file=paste(plotspath,"proj_mgmpt_rep_box.emf", sep = "/"))
+show(proj_mgmpt_rep_box)
+dev.off()
+
+accounting_rep_box <- ggplot(na.omit(skills_df), aes(x=accounting_rep, y=delonemclean)) +
   geom_boxplot() +
   xlab("Skill represented on project team") +
-  ylab("Project success score [deLone & McLean]") +
+  ylab("Project success score [DeLone & McLean]") +
   scale_x_discrete(breaks=c("0", "1"),
                    labels=c("No", "Yes")) +
+  scale_y_continuous(limits=c(-1,1),breaks=c(-1,-0.5,0,0.5,1), 
+                     labels=c("-1.0\nUnsuccessful","0.5","0.0","0.5","Successful\n1.0")) +
   ggtitle("Skill \"Accounting/costing/budgeting\" in procurement team")
 ggsave(paste(plotspath,"accounting_rep_box.png", sep = "/"))
 
-ggplot(na.omit(skills_df), aes(x=communications_rep, y=delonemclean)) +
+emf(file=paste(plotspath,"accounting_rep_box.emf", sep = "/"))
+show(accounting_rep_box)
+dev.off()
+
+communications_rep_box <- ggplot(na.omit(skills_df), aes(x=communications_rep, y=delonemclean)) +
   geom_boxplot() +
   xlab("Skill represented on project team") +
-  ylab("Project success score [deLone & McLean]") +
+  ylab("Project success score [DeLone & McLean]") +
   scale_x_discrete(breaks=c("0", "1"),
                    labels=c("No", "Yes")) +
+  scale_y_continuous(limits=c(-1,1),breaks=c(-1,-0.5,0,0.5,1), 
+                     labels=c("-1.0\nUnsuccessful","0.5","0.0","0.5","Successful\n1.0")) +
   ggtitle("Skill \"Communications/outreach\" in procurement team")
 ggsave(paste(plotspath,"communications_rep_box.png", sep = "/"))
 
-ggplot(na.omit(skills_df), aes(x=accessibility_rep, y=delonemclean)) +
+emf(file=paste(plotspath,"communications_rep_box.emf", sep = "/"))
+show(communications_rep_box)
+dev.off()
+
+accessibility_rep_box <- ggplot(na.omit(skills_df), aes(x=accessibility_rep, y=delonemclean)) +
   geom_boxplot() +
   xlab("Skill represented on project team") +
-  ylab("Project success score [deLone & McLean]") +
+  ylab("Project success score [DeLone & McLean]") +
   scale_x_discrete(breaks=c("0", "1"),
                    labels=c("No", "Yes")) +
+  scale_y_continuous(limits=c(-1,1),breaks=c(-1,-0.5,0,0.5,1), 
+                     labels=c("-1.0\nUnsuccessful","0.5","0.0","0.5","Successful\n1.0")) +
   ggtitle("Skill \"Accessibility assessment\" in procurement team")
 ggsave(paste(plotspath,"accessibility_rep_box.png", sep = "/"))
 
-ggplot(na.omit(skills_df), aes(x=negotiation_rep, y=delonemclean)) +
+emf(file=paste(plotspath,"accessibility_rep_box.emf", sep = "/"))
+show(accessibility_rep_box)
+dev.off()
+
+negotiation_rep_box <- ggplot(na.omit(skills_df), aes(x=negotiation_rep, y=delonemclean)) +
   geom_boxplot() +
   xlab("Skill represented on project team") +
-  ylab("Project success score [deLone & McLean]") +
+  ylab("Project success score [DeLone & McLean]") +
   scale_x_discrete(breaks=c("0", "1"),
                    labels=c("No", "Yes")) +
+  scale_y_continuous(limits=c(-1,1),breaks=c(-1,-0.5,0,0.5,1), 
+                     labels=c("-1.0\nUnsuccessful","0.5","0.0","0.5","Successful\n1.0")) +
   ggtitle("Skill \"Negotiation\" in procurement team")
 ggsave(paste(plotspath,"negotiation_rep_box.png", sep = "/"))
 
-ggplot(na.omit(skills_df), aes(x=communications_rep, y=delonemclean)) +
+emf(file=paste(plotspath,"negotiation_rep_box.emf", sep = "/"))
+show(negotiation_rep_box)
+dev.off()
+
+communications_rep_box <- ggplot(na.omit(skills_df), aes(x=communications_rep, y=delonemclean)) +
   geom_boxplot() +
   xlab("Skill represented on project team") +
-  ylab("Project success score [deLone & McLean]") +
+  ylab("Project success score [DeLone & McLean]") +
   scale_x_discrete(breaks=c("0", "1"),
                    labels=c("No", "Yes")) +
+  scale_y_continuous(limits=c(-1,1),breaks=c(-1,-0.5,0,0.5,1), 
+                     labels=c("-1.0\nUnsuccessful","0.5","0.0","0.5","Successful\n1.0")) +
   ggtitle("Skill \"Communications/outreach\" in procurement team")
 ggsave(paste(plotspath,"communications_rep_box.png", sep = "/"))
 
-ggplot(na.omit(skills_df), aes(x=UX_rep, y=delonemclean)) +
+emf(file=paste(plotspath,"communications_rep_box.emf", sep = "/"))
+show(communications_rep_box)
+dev.off()
+
+UX_rep_box <- ggplot(na.omit(skills_df), aes(x=UX_rep, y=delonemclean)) +
   geom_boxplot() +
   xlab("Skill represented on project team") +
-  ylab("Project success score [deLone & McLean]") +
+  ylab("Project success score [DeLone & McLean]") +
   scale_x_discrete(breaks=c("0", "1"),
                    labels=c("No", "Yes")) +
+  scale_y_continuous(limits=c(-1,1),breaks=c(-1,-0.5,0,0.5,1), 
+                     labels=c("-1.0\nUnsuccessful","0.5","0.0","0.5","Successful\n1.0")) +
   ggtitle("Skill \"User experience design\" in procurement team")
 ggsave(paste(plotspath,"UX_rep_box.png", sep = "/"))
 
-ggplot(na.omit(skills_df), aes(x=design_rep, y=delonemclean)) +
+emf(file=paste(plotspath,"UX_rep_box.emf", sep = "/"))
+show(UX_rep_box)
+dev.off()
+
+design_rep_box <- ggplot(na.omit(skills_df), aes(x=design_rep, y=delonemclean)) +
   geom_boxplot() +
   xlab("Skill represented on project team") +
-  ylab("Project success score [deLone & McLean]") +
+  ylab("Project success score [DeLone & McLean]") +
   scale_x_discrete(breaks=c("0", "1"),
                    labels=c("No", "Yes")) +
+  scale_y_continuous(limits=c(-1,1),breaks=c(-1,-0.5,0,0.5,1), 
+                     labels=c("-1.0\nUnsuccessful","0.5","0.0","0.5","Successful\n1.0")) +
   ggtitle("Skill \"Graphic design\" in procurement team")
 ggsave(paste(plotspath,"design_rep_box.png", sep = "/"))
 
-ggplot(na.omit(skills_df), aes(x=webdev_rep, y=delonemclean)) +
+emf(file=paste(plotspath,"design_rep_box.emf", sep = "/"))
+show(design_rep_box)
+dev.off()
+
+webdev_rep_box <- ggplot(na.omit(skills_df), aes(x=webdev_rep, y=delonemclean)) +
   geom_boxplot() +
   xlab("Skill represented on project team") +
-  ylab("Project success score [deLone & McLean]") +
+  ylab("Project success score [DeLone & McLean]") +
   scale_x_discrete(breaks=c("0", "1"),
                    labels=c("No", "Yes")) +
+  scale_y_continuous(limits=c(-1,1),breaks=c(-1,-0.5,0,0.5,1), 
+                     labels=c("-1.0\nUnsuccessful","0.5","0.0","0.5","Successful\n1.0")) +
   ggtitle("Skill \"Web design\" in procurement team")
 ggsave(paste(plotspath,"webdev_rep_box.png", sep = "/"))
 
-ggplot(na.omit(skills_df), aes(x=dev_rep, y=delonemclean)) +
+emf(file=paste(plotspath,"webdev_rep_box.emf", sep = "/"))
+show(webdev_rep_box)
+dev.off()
+
+dev_rep_box <- ggplot(na.omit(skills_df), aes(x=dev_rep, y=delonemclean)) +
   geom_boxplot() +
   xlab("Skill represented on project team") +
-  ylab("Project success score [deLone & McLean]") +
+  ylab("Project success score [DeLone & McLean]") +
   scale_x_discrete(breaks=c("0", "1"),
                    labels=c("No", "Yes")) +
+  scale_y_continuous(limits=c(-1,1),breaks=c(-1,-0.5,0,0.5,1), 
+                     labels=c("-1.0\nUnsuccessful","0.5","0.0","0.5","Successful\n1.0")) +
   ggtitle("Skill \"Computer programming\" in procurement team")
 ggsave(paste(plotspath,"dev_rep_box.png", sep = "/"))
 
-ggplot(na.omit(skills_df), aes(x=sysadmin_rep, y=delonemclean)) +
+emf(file=paste(plotspath,"dev_rep_box.emf", sep = "/"))
+show(dev_rep_box)
+dev.off()
+
+sysadmin_rep_box <- ggplot(na.omit(skills_df), aes(x=sysadmin_rep, y=delonemclean)) +
   geom_boxplot() +
   xlab("Skill represented on project team") +
-  ylab("Project success score [deLone & McLean]") +
+  ylab("Project success score [DeLone & McLean]") +
   scale_x_discrete(breaks=c("0", "1"),
                    labels=c("No", "Yes")) +
+  scale_y_continuous(limits=c(-1,1),breaks=c(-1,-0.5,0,0.5,1), 
+                     labels=c("-1.0\nUnsuccessful","0.5","0.0","0.5","Successful\n1.0")) +
   ggtitle("Skill \"System administration\" in procurement team")
 ggsave(paste(plotspath,"sysadmin_rep_box.png", sep = "/"))
+
+emf(file=paste(plotspath,"sysadmin_rep_box.emf", sep = "/"))
+show(sysadmin_rep_box)
+dev.off()
+
 
 # Analysis of variance (ANOVA) of presence of skills on project success score.
 # cf Wikipedia (https://en.wikipedia.org/wiki/Analysis_of_variance):
@@ -221,3 +295,20 @@ print("ANOVA of presence of skills on project success score:")
 print(anova(skills_fit))
 print("Summary:")
 print(summary(skills_fit))
+
+# Next, investigate whether the procurement type had an impact on projet success
+procurement_df <- data.frame(delonemclean = delonemclean_score, proctype = survey$Q6)
+procurement_impact_box <- ggplot(na.omit(procurement_df), aes(x=proctype, y=delonemclean, group=proctype)) + 
+  geom_boxplot() +
+  xlab("Procurement method employed") +
+  ylab("Project success score [DeLone & McLean]") +
+  scale_y_continuous(limits=c(-1,1),breaks=c(-1,-0.5,0,0.5,1), 
+                     labels=c("-1.0\nUnsuccessful","0.5","0.0","0.5","Successful\n1.0")) +
+  scale_x_continuous(breaks=c(1,2,3,4,5),
+                   labels=c("Formal/RFP", "Competitive", "Noncompetitive", "In-house", "Other")) +
+  ggtitle("Procurement method employed")
+ggsave(paste(plotspath,"procurement_impact_box.pdf", sep = "/"), width=10,height=5)
+
+emf(file=paste(plotspath,"procurement_impact_box.emf", sep = "/"))
+show(procurement_impact_box)
+dev.off()

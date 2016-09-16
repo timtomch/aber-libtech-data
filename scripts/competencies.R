@@ -1,7 +1,7 @@
 # This script takes the CSV file exported from BOS with the survey data
 
 # Specify which file to open
-infile <- "anon-data/aber-libtech-questionnaire-results-noncoded-anon.csv"
+infile <- "data/results-for-investigating-2016-08-29-0052.csv"
 
 # And where to store results
 plotspath <- "plots"
@@ -26,6 +26,8 @@ addHeader(rtffile, "Survey demographics", subtitle = paste("Created:", Sys.time(
 survey_tot <- nrow(survey)
 print(paste('Total number of responses:', survey_tot))
 addParagraph(rtffile, paste('Total number of responses:', survey_tot))
+
+
 
 # Load the ggplot2 library, for plotting results.
 library("ggplot2")
@@ -64,6 +66,8 @@ print(basecomp_results)
 
 addParagraph(rtffile, "Base competencies:")
 addTable(rtffile, cbind(rownames(basecomp_results), basecomp_results))
+# Close and write out the RTF file
+done(rtffile)
 
 # This is the ugliest code ever
 # Either switch to Excel or learn proper R
@@ -88,8 +92,11 @@ basecomp_plot <- ggplot() + geom_bar(data=df2, aes(x=rownames(df2),y=survey_tot)
                 geom_text(data=df2, aes(x=rownames(df2),y=Not.well.represented+Somewhat.represented+(Well.represented/2), 
                           label=paste(round(Well.represented/survey_tot*100),"%"))) +
                 scale_fill_manual(name="Legend", values = c("Not well represented"="#E69F00", "Somewhat represented"="#56B4E9", "Well represented"="#009E73", "Don't know - N/A"="#999999"))
-
 ggsave(paste(plotspath,"baseline_competencies.png", sep = "/"))               
 
-# Close and write out the RTF file
-done(rtffile)
+# Save graph as EMF format for import into MS Word :poop:
+library("devEMF")
+emf(file=paste(plotspath,"baseline_competencies.emf", sep = "/"))
+show(basecomp_plot)
+dev.off()
+
