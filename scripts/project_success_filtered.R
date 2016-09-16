@@ -9,7 +9,7 @@ plotspath <- "plots-filtered"
 # First, store the full survey set
 unfiltered_survey <- survey
 # Filter the survey set
-survey <- subset(survey, Q6 == 1)
+survey <- subset(survey, Q6 == 1 || Q6 == 2)
 # Run the analysis
 print('@@@@@@ FILTERED BY FORMAL PROCUREMENT ONLY @@@@@@')
 
