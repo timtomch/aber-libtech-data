@@ -1,7 +1,7 @@
 # This script takes the CSV file exported from BOS with the survey data
 
 # Specify which file to open
-infile <- "data/results-for-investigating-2016-09-02-0037-coded.csv"
+infile <- "anon-data/aber-libtech-questionnaire-results-coded-anon.csv"
 
 # And where to store results
 plotspath <- "plots"

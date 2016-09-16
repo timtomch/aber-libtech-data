@@ -5,3 +5,5 @@
 data/*
 tables/*
 plots/*
+anon-data/*
+.DS_Store
