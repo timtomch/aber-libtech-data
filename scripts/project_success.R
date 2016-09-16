@@ -312,3 +312,115 @@ ggsave(paste(plotspath,"procurement_impact_box.pdf", sep = "/"), width=10,height
 emf(file=paste(plotspath,"procurement_impact_box.emf", sep = "/"))
 show(procurement_impact_box)
 dev.off()
+
+# Compute statistical significance
+print("Significance of procurement method on project success score:")
+summary(lm(delonemclean ~ proctype, data=procurement_df))
+
+
+# Investigate whether who made the procurement decision had an impact on project success
+decision_df <- data.frame(delonemclean = delonemclean_score, 
+                          mgmt_decision = factor(survey$Q7_1, ordered=TRUE), 
+                          IT_decision = factor(survey$Q7_2, ordered=TRUE),
+                          front_decision = factor(survey$Q7_3, ordered=TRUE),
+                          back_decision = factor(survey$Q7_4, ordered=TRUE),
+                          user_decision = factor(survey$Q7_5, ordered=TRUE),
+                          outside_decision = factor(survey$Q7_6), ordered=TRUE)
+
+mgmt_decision_box <- ggplot(na.omit(decision_df), aes(x=mgmt_decision, y=delonemclean)) +
+  geom_boxplot() +
+  xlab("Role represented on decision team") +
+  ylab("Project success score [DeLone & McLean]") +
+  scale_x_discrete(breaks=c("0", "1"),
+                   labels=c("No", "Yes")) +
+  scale_y_continuous(limits=c(-1,1),breaks=c(-1,-0.5,0,0.5,1), 
+                     labels=c("-1.0\nUnsuccessful","0.5","0.0","0.5","Successful\n1.0")) +
+  ggtitle("Management participated in decision")
+ggsave(paste(plotspath,"mgmt_decision_box.png", sep = "/"))
+
+emf(file=paste(plotspath,"mgmt_decision_box.emf", sep = "/"))
+show(mgmt_decision_box)
+dev.off()
+
+IT_decision_box <- ggplot(na.omit(decision_df), aes(x=IT_decision, y=delonemclean)) +
+  geom_boxplot() +
+  xlab("Role represented on decision team") +
+  ylab("Project success score [DeLone & McLean]") +
+  scale_x_discrete(breaks=c("0", "1"),
+                   labels=c("No", "Yes")) +
+  scale_y_continuous(limits=c(-1,1),breaks=c(-1,-0.5,0,0.5,1), 
+                     labels=c("-1.0\nUnsuccessful","0.5","0.0","0.5","Successful\n1.0")) +
+  ggtitle("IT specialists participated in decision")
+ggsave(paste(plotspath,"IT_decision_box.png", sep = "/"))
+
+emf(file=paste(plotspath,"IT_decision_box.emf", sep = "/"))
+show(IT_decision_box)
+dev.off()
+
+front_decision_box <- ggplot(na.omit(decision_df), aes(x=front_decision, y=delonemclean)) +
+  geom_boxplot() +
+  xlab("Role represented on decision team") +
+  ylab("Project success score [DeLone & McLean]") +
+  scale_x_discrete(breaks=c("0", "1"),
+                   labels=c("No", "Yes")) +
+  scale_y_continuous(limits=c(-1,1),breaks=c(-1,-0.5,0,0.5,1), 
+                     labels=c("-1.0\nUnsuccessful","0.5","0.0","0.5","Successful\n1.0")) +
+  ggtitle("Front-line staff participated in decision")
+ggsave(paste(plotspath,"front_decision_box.png", sep = "/"))
+
+emf(file=paste(plotspath,"front_decision_box.emf", sep = "/"))
+show(front_decision_box)
+dev.off()
+
+back_decision_box <- ggplot(na.omit(decision_df), aes(x=back_decision, y=delonemclean)) +
+  geom_boxplot() +
+  xlab("Role represented on decision team") +
+  ylab("Project success score [DeLone & McLean]") +
+  scale_x_discrete(breaks=c("0", "1"),
+                   labels=c("No", "Yes")) +
+  scale_y_continuous(limits=c(-1,1),breaks=c(-1,-0.5,0,0.5,1), 
+                     labels=c("-1.0\nUnsuccessful","0.5","0.0","0.5","Successful\n1.0")) +
+  ggtitle("Back-office staff participated in decision")
+ggsave(paste(plotspath,"back_decision_box.png", sep = "/"))
+
+emf(file=paste(plotspath,"back_decision_box.emf", sep = "/"))
+show(back_decision_box)
+dev.off()
+
+user_decision_box <- ggplot(na.omit(decision_df), aes(x=user_decision, y=delonemclean)) +
+  geom_boxplot() +
+  xlab("Role represented on decision team") +
+  ylab("Project success score [DeLone & McLean]") +
+  scale_x_discrete(breaks=c("0", "1"),
+                   labels=c("No", "Yes")) +
+  scale_y_continuous(limits=c(-1,1),breaks=c(-1,-0.5,0,0.5,1), 
+                     labels=c("-1.0\nUnsuccessful","0.5","0.0","0.5","Successful\n1.0")) +
+  ggtitle("End users participated in decision")
+ggsave(paste(plotspath,"user_decision_box.png", sep = "/"))
+
+emf(file=paste(plotspath,"user_decision_box.emf", sep = "/"))
+show(user_decision_box)
+dev.off()
+
+outside_decision_box <- ggplot(na.omit(decision_df), aes(x=outside_decision, y=delonemclean)) +
+  geom_boxplot() +
+  xlab("Role represented on decision team") +
+  ylab("Project success score [DeLone & McLean]") +
+  scale_x_discrete(breaks=c("0", "1"),
+                   labels=c("No", "Yes")) +
+  scale_y_continuous(limits=c(-1,1),breaks=c(-1,-0.5,0,0.5,1), 
+                     labels=c("-1.0\nUnsuccessful","0.5","0.0","0.5","Successful\n1.0")) +
+  ggtitle("Third party participated in decision")
+ggsave(paste(plotspath,"outside_decision_box.png", sep = "/"))
+
+emf(file=paste(plotspath,"outside_decision_box.emf", sep = "/"))
+show(outside_decision_box)
+dev.off()
+
+# Analysis of variance (ANOVA) of who made the decision on project success score.
+decision_fit <- lm(delonemclean ~ mgmt_decision + IT_decision + front_decision +
+                   back_decision + user_decision + outside_decision, data=decision_df)
+print("ANOVA of who made the decsion on project success score:")
+print(anova(decision_fit))
+print("Summary:")
+print(summary(decision_fit))
